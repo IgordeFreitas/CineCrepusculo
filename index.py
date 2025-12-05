@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Body
-from controller.clientes import getClientes
-
+from controller.clientes.consultarClientes import selecionarClientes
+from controller.produtos.consultarProduto import selecionarProdutos
 from controller.produtos.cadastrarProduto import cadastrarProduto
 
 app = FastAPI()
@@ -11,7 +11,7 @@ def inicio():
 
 @app.get("/clientes")
 def get_usuarios():
-    return getClientes()
+    return selecionarClientes()
 
 @app.post("/clientes")
 def cadastrar(
@@ -20,6 +20,8 @@ def cadastrar(
         email:str = Body(embed = True)
 ):
     return
+
+############################################################################################
 
 @app.get("/clientes/{id_cliente}")
 def getcliente(id_cliente):
@@ -31,16 +33,7 @@ def atualizar_cliente(
     nome: str=Body(embed=True),
     idade:int=Body(embed=True)
     ):
-
-    if id_cliente>=len(clientes):
-        return{"erro":"cliente não encontrado"}
-    
-    if nome:
-        clientes[id_cliente]["nome"]=nome
-        
-    if idade:
-        clientes[id_cliente]["idade"]=idade    
-
+    return
 @app.delete("/clientes")
 def deletarcliente(id_cliente:str = Body(embed=True)):
     return({"ação":"deletar cliente", "cliente": id_cliente})
@@ -54,6 +47,8 @@ def selecionarfilmes(
         duracao:str = Body(embed=True)
 ):
     return({"ação": "selecionar filmes", "nome": nome, "genero": Genero, "sinopse": sinopse })
+
+##########################################################################################
 
 @app.get("/filmes")
 def getfilme():
@@ -69,26 +64,23 @@ def atualizar_filme(
     titulo:str= Body(embed=True),
     genero:str= Body(embed=True)
 ):
-    if id_filme>=len(filmes):
-        return{"erro":"Filme não encontrado"}
     
-    if titulo:
-        filmes[id_filme]["titulo"]= titulo
+ ########################################################################################
 
-    if genero:
-        filmes[id_filme]["genero"]= genero
-        return{"mensagem":"Filme atualizado!", "filme": filmes[id_filme]} 
-    
+@app.get("/produtos")
+def getProdutos():
+    return selecionarProdutos()
+
+@app.get("/produtos/{id_produto}")
+def getcliente(produto):
+    return ({"produto": produto})
+
 @app.post("/produtos")
 def listadeprodutos(
         nome:str = Body(embed=True),
         preco:float = Body(embed=True)
 ):
     return cadastrarProduto(nome, preco)
-
-@app.get("/produtos/{id_produto}")
-def getcliente(produto):
-    return ({"produto": produto})
 
 @app.patch("/produtos/{id_produto}")
 def atualizar_Produto(
@@ -104,6 +96,17 @@ def deletarfilme (id_produto:str = Body(embed=True)):
   
   
 #@app.post ("/clientes")
+@app.delete("/clientes")
+def deletarcliente(id_cliente:str = Body(embed=True)):
+    return({"ação":"deletar cliente", "cliente": id_cliente})
+    
+   
+@app.post("/filmes")
+def selecionarfilmes(
+        nome:str = Body(embed=True)
+    ):
+    return
+
 #@app.get ("/clientes")
 #@app.patch("/clientes")
 #@app.delete("/clientes")

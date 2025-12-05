@@ -1,3 +1,9 @@
+CREATE DATABASE IF NOT EXISTS cine_crepusculo
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+USE cine_crepusculo;
+
 CREATE TABLE cliente (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,
     nome TEXT NOT NULL,
@@ -20,22 +26,22 @@ CREATE TABLE sala (
 
 CREATE TABLE sessao (
     id_sessao INT AUTO_INCREMENT PRIMARY KEY,
-    id_filme INT NOT NULL,
+    id_filme INT,
     data_hora TIMESTAMP DEFAULT NOW(),
-    id_sala INT NOT NULL,
-    FOREIGN KEY (id_filme) REFERENCES filme (id_filme),
-    FOREIGN KEY (id_sala) REFERENCES sala (id_sala)
+    id_sala INT,
+    FOREIGN KEY (id_filme) REFERENCES filme (id_filme) ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (id_sala) REFERENCES sala (id_sala) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE pedido (
     id_pedido INT AUTO_INCREMENT PRIMARY KEY,
-    id_cliente INT NOT NULL,
-    id_sessao INT NOT NULL,
+    id_cliente INT,
+    id_sessao INT,
     assento TEXT NOT NULL,
     status ENUM ('disponivel', 'selecionado', 'ocupado'),
     data_pedido TIMESTAMP DEFAULT NOW(),
-    FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente),
-    FOREIGN KEY (id_sessao) REFERENCES sessao (id_sessao)
+    FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente)ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (id_sessao) REFERENCES sessao (id_sessao) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE produto (
@@ -45,12 +51,12 @@ CREATE TABLE produto (
 );
 
 CREATE TABLE pedido_produto (
-    id_pedido INT NOT NULL,
-    id_produto INT NOT NULL,
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id_pedido INT,
+    id_produto INT,
     quantidade INT NOT NULL CHECK (quantidade > 0),
-    PRIMARY KEY (id_pedido, id_produto),
-    FOREIGN KEY (id_pedido) REFERENCES pedido (id_pedido),
-    FOREIGN KEY (id_produto) REFERENCES produto (id_produto)9
+    FOREIGN KEY (id_pedido) REFERENCES pedido (id_pedido) ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (id_produto) REFERENCES produto (id_produto) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- INSERT
