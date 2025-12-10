@@ -1,7 +1,20 @@
-from fastapi import FastAPI, Body
+from FastAPI import FastAPI, Body
 from controller.clientes.consultarClientes import selecionarClientes
+from controller.clientes.atualizarClientes import atualizarCliente
+from controller.clientes.deletarClientes import deletarClientes
+from controller.clientes.cadastrarClientes import getClientes
+
 from controller.produtos.consultarProduto import selecionarProdutos
+from controller.produtos.atualizarProduto import atualizarProdutos
+from controller.produtos.deletarProduto import deletarProduto
 from controller.produtos.cadastrarProduto import cadastrarProduto
+
+from controller.filmes.consultarFilmes import selecionarFilmes
+from controller.filmes.atualizarFilmes import atualizarFilmes
+from controller.filmes.deletarFilmes import deletarFilmes
+from controller.filmes.cadastrarFilmes import cadastrarProduto
+
+from fastapi import FastAPI, Body
 
 app = FastAPI()
 
@@ -33,10 +46,10 @@ def atualizar_cliente(
     nome: str=Body(embed=True),
     idade:int=Body(embed=True)
     ):
-    return
+    return 
 @app.delete("/clientes")
 def deletarcliente(id_cliente:str = Body(embed=True)):
-    return({"ação":"deletar cliente", "cliente": id_cliente})
+    return deletarClientes
     
    
 @app.post("/filmes")
@@ -46,7 +59,7 @@ def selecionarfilmes(
         sinopse:str = Body(embed=True),
         duracao:str = Body(embed=True)
 ):
-    return({"ação": "selecionar filmes", "nome": nome, "genero": Genero, "sinopse": sinopse })
+    return getClientes
 
 ##########################################################################################
 
@@ -64,7 +77,7 @@ def atualizar_filme(
     titulo:str= Body(embed=True),
     genero:str= Body(embed=True)
 ):
-    
+    return atualizarCliente
  ########################################################################################
 
 @app.get("/produtos")
@@ -73,14 +86,15 @@ def getProdutos():
 
 @app.get("/produtos/{id_produto}")
 def getcliente(produto):
-    return ({"produto": produto})
+    return selecionarFilmes
 
 @app.post("/produtos")
 def listadeprodutos(
-        nome:str = Body(embed=True),
-        preco:float = Body(embed=True)
+    nome:str = Body(embed=True),
+    preco:float = Body(embed=True)
 ):
-    return cadastrarProduto(nome, preco)
+    
+    return cadastrarProduto(nome,preco)
 
 @app.patch("/produtos/{id_produto}")
 def atualizar_Produto(
